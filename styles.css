@@ -1266,58 +1266,97 @@ input {
 }
 
 .screen-socialproof {
-  max-width: 860px;
-  margin-inline: auto;
-  padding-top: var(--space-24);
+  min-height: 560px;
+  padding-top: var(--space-40);
   text-align: center;
 }
 
 .socialproof-card {
   display: grid;
-  gap: var(--space-24);
+  gap: var(--space-28);
 }
+
+/* ── Image stack ─────────────────────────────────────────── */
+
+.socialproof-image-wrap {
+  position: relative;
+  width: min(480px, 100%);
+  margin: 0 auto;
+}
+
+.socialproof-map {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  transform: scale(0);
+  opacity: 0;
+  transform-origin: center center;
+  animation: mapReveal 900ms cubic-bezier(0.34, 1.1, 0.64, 1) 100ms forwards;
+}
+
+.socialproof-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 72%;
+  height: auto;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  transform-origin: center center;
+  animation: socialProofReveal 1100ms cubic-bezier(0.34, 1.2, 0.64, 1) 1100ms forwards;
+}
+
+@keyframes mapReveal {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes socialProofReveal {
+  from {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+/* ── Heading block ───────────────────────────────────────── */
 
 .socialproof-heading {
   display: grid;
-  gap: var(--space-8);
+  gap: 10px;
   justify-items: center;
 }
 
 .socialproof-title {
   margin: 0;
-  display: grid;
-  gap: var(--space-8);
-  font-weight: 600;
-}
-
-.socialproof-title__highlight {
-  color: var(--color-primary);
-  font-family: var(--font-display);
-  font-size: 32px;
-  line-height: 1.08;
-  letter-spacing: 0;
-}
-
-.socialproof-title__text {
-  color: rgb(25, 25, 25);
+  color: #1a1a1a;
   font-family: var(--font-display);
   font-size: 28px;
-  line-height: 1.1;
+  line-height: 1.2;
+  font-weight: 700;
 }
 
-.socialproof-image-wrap {
-  width: min(465px, 100%);
-  margin: 0 auto;
+.socialproof-subtitle {
+  margin: 0;
+  color: #5b6277;
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 400;
+  max-width: 380px;
 }
 
-.socialproof-image {
-  display: block;
-  width: 100%;
-  max-height: min(42vh, 420px);
-  margin-inline: auto;
-  object-fit: contain;
-  height: auto;
-}
+/* ── CTA button ──────────────────────────────────────────── */
 
 .socialproof-continue {
   width: min(100%, 320px);
@@ -1335,15 +1374,11 @@ input {
 
 @media (max-height: 820px) {
   .socialproof-image-wrap {
-    width: min(400px, 88%);
-  }
-
-  .socialproof-image {
-    max-height: 34vh;
+    width: min(420px, 92%);
   }
 
   .screen-socialproof {
-    padding-top: var(--space-20);
+    padding-top: var(--space-28);
   }
 }
 
@@ -3110,6 +3145,19 @@ input {
   }
 }
 
+@keyframes checkoutArrowPulseDown {
+  0%,
+  100% {
+    opacity: 0.18;
+    transform: rotate(90deg) translateX(0);
+  }
+
+  45% {
+    opacity: 0.78;
+    transform: rotate(90deg) translateX(8px);
+  }
+}
+
 .scratch-card__continue {
   width: min(100%, 320px);
   margin-top: var(--space-22);
@@ -3397,6 +3445,7 @@ input {
   align-items: center;
   justify-content: space-between;
   gap: 14px;
+  margin-top: var(--space-12);
 }
 
 .checkout-plan-option__heading {
@@ -3481,7 +3530,9 @@ input {
 .checkout-plan-option__daily-arrow {
   width: 17px;
   flex-shrink: 0;
-  display: block;
+  align-self: stretch;
+  background: #ecebf3;
+  clip-path: polygon(100% 0%, 100% 100%, 0% 50%);
 }
 
 .checkout-plan-option__daily-tag {
@@ -3552,7 +3603,7 @@ input {
 
 .checkout-section-title {
   max-width: 420px;
-  margin: 0 auto;
+  margin: var(--space-12) auto;
   font-family: var(--font-display);
   font-size: 28px;
   line-height: 1.16;
@@ -3763,11 +3814,12 @@ input {
   background: #ffffff;
   text-align: center;
   overflow: visible;
-  margin-bottom: 32px;
+  margin-top: 32px;
+  margin-bottom: 16px;
 }
 
 .checkout-moneyback__content {
-  padding-right: 72px;
+  padding: 0;
 }
 
 .checkout-moneyback__title {
@@ -3782,12 +3834,13 @@ input {
 
 .checkout-moneyback__badge {
   position: absolute;
-  right: 14px;
-  bottom: -28px;
+  right: 20px;
+  top: -28px;
   width: 70px;
   height: 90px;
   display: block;
   filter: drop-shadow(0 6px 14px rgba(255, 79, 0, 0.28));
+  pointer-events: none;
 }
 
 .checkout-moneyback__badge svg {
@@ -4255,12 +4308,23 @@ input {
     padding: var(--space-20) var(--space-18) var(--space-22);
   }
 
+  .screen-title,
+  .hero-title {
+    font-size: 28px;
+  }
+
+  .socialproof-title,
+  .growth-projection__title,
+  .checkout-offer__title {
+    font-size: 24px;
+  }
+
   .screen-profile-summary {
     gap: var(--space-18);
   }
 
   .profile-summary__title {
-    font-size: 28px;
+    font-size: 24px;
   }
 
   .profile-summary-panel {
@@ -4378,7 +4442,7 @@ input {
   }
 
   .plan-builder__title {
-    font-size: 28px;
+    font-size: 24px;
   }
 
   .plan-builder__list {
@@ -4431,7 +4495,7 @@ input {
   }
 
   .safety-chart__title {
-    font-size: 28px;
+    font-size: 24px;
   }
 
   .safety-chart__plot {
@@ -4462,7 +4526,7 @@ input {
   }
 
   .scratch-card__title {
-    font-size: 28px;
+    font-size: 24px;
   }
 
   .scratch-card__surface {
@@ -4486,7 +4550,7 @@ input {
   }
 
   .scratch-card__modal-title {
-    font-size: 28px;
+    font-size: 24px;
   }
 
   .scratch-card__modal-copy,
@@ -4528,15 +4592,21 @@ input {
   }
 
   .checkout-comparison__arrowflow {
-    flex-direction: row;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
     margin-bottom: 0;
+    overflow: visible;
   }
 
   .checkout-comparison__arrow {
-    width: 20px;
-    height: 42px;
-    transform: rotate(90deg);
+    width: 22px;
+    height: 72px;
+    animation-name: checkoutArrowPulseDown;
+    /* rotate(90deg) makes visual size 72px wide × 22px tall.
+       Collapse the layout height to 22px with negative margins
+       so items stack at the correct spacing: (22 - 72) / 2 = -25px */
+    margin-block: -25px;
   }
 
   .checkout-result-chips,

@@ -223,8 +223,10 @@ const outroSteps = [
     type: "socialproof",
     titleHighlight: "More than 745,000 people",
     title: "trust NewMindStart",
+    subtitle: "Become a part of a growing worldwide community and achieve your goals with us.",
     cta: "Continue",
-    image: "./assets/socialproof.png"
+    image: "./assets/socialproof.png",
+    map: "./assets/map.png"
   },
   {
     type: "email"
@@ -587,14 +589,15 @@ function renderSocialProofStep(step) {
   app.innerHTML = `
     <div class="screen screen-socialproof">
       <section class="socialproof-card">
+        <div class="socialproof-image-wrap">
+          <img class="socialproof-map" src="${escapeHtml(getAssetUrl(step.map))}" alt="" aria-hidden="true" />
+          <img class="socialproof-image" src="${escapeHtml(getAssetUrl(step.image))}" alt="Community social proof" />
+        </div>
         <div class="socialproof-heading">
           <h2 class="socialproof-title">
-            <span class="socialproof-title__highlight">${escapeHtml(step.titleHighlight)}</span>
-            <span class="socialproof-title__text">${escapeHtml(step.title)}</span>
+            ${escapeHtml(step.titleHighlight)} ${escapeHtml(step.title)}
           </h2>
-        </div>
-        <div class="socialproof-image-wrap">
-          <img class="socialproof-image" src="${escapeHtml(getAssetUrl(step.image))}" alt="Community social proof" />
+          <p class="socialproof-subtitle">${escapeHtml(step.subtitle)}</p>
         </div>
       </section>
       <button class="primary-button socialproof-continue button-continue" id="continueSocialProof" type="button">
@@ -2095,13 +2098,13 @@ function getCheckoutOfferData() {
   ];
 
   const selectedPlan = plans.find((plan) => plan.selected) || plans[1];
-  const legalCopy = expired
+  const legalHtml = expired
     ? `By clicking "GET MY PLAN", you agree to automatic subscription renewal. ${selectedPlan.label.toUpperCase()} is billed at ${selectedPlan.currentPrice}. Cancel via email: hello@newmindstart.com.`
     : selectedPlan.id === "trial"
-      ? 'By clicking "GET MY PLAN", you agree to a 1-week trial at $17.77, converting to a $38.95/month auto-renewing subscription if not canceled. Cancel via email: hello@newmindstart.com.'
+      ? 'By clicking "GET MY PLAN", you agree to a 1-week trial at <s>$17.77</s> $6.90, converting to a <s>$38.95</s> $15.20/month auto-renewing subscription if not canceled. Cancel via email: hello@newmindstart.com.'
       : selectedPlan.id === "core"
-        ? 'By clicking "GET MY PLAN", you agree to automatic subscription renewal. First month is $38.95, then $38.95/month. Cancel via email: hello@newmindstart.com.'
-        : 'By clicking "GET MY PLAN", you agree to automatic subscription renewal. First three months are $94.85, then $94.85 per three months. Cancel via email: hello@newmindstart.com.';
+        ? 'By clicking "GET MY PLAN", you agree to automatic subscription renewal. First month is <s>$38.95</s> $15.20, then $38.95/month. Cancel via email: hello@newmindstart.com.'
+        : 'By clicking "GET MY PLAN", you agree to automatic subscription renewal. First three months are <s>$94.85</s> $41.60, then $94.85 per three months. Cancel via email: hello@newmindstart.com.';
 
   return {
     ageRange,
@@ -2110,7 +2113,7 @@ function getCheckoutOfferData() {
     expired,
     plans,
     selectedPlan,
-    legalCopy,
+    legalHtml,
     goals: [
       "A balanced, regulated nervous system",
       "Body feels physically calm and safe",
@@ -2196,9 +2199,7 @@ function renderCheckoutPlanOptions(offer) {
             <div class="checkout-plan-option__price-right">
               ${plan.originalDailyPrice ? `<span class="checkout-plan-option__daily-was">${escapeHtml(plan.originalDailyPrice)}</span>` : ""}
               <div class="checkout-plan-option__daily-wrap">
-                <svg class="checkout-plan-option__daily-arrow" viewBox="0 0 17 48" fill="none" aria-hidden="true">
-                  <path d="M0.812191 26.6412C-0.261685 25.2243 -0.271467 23.2686 0.788183 21.841L17 0L17 48Z" fill="#ecebf3"/>
-                </svg>
+                <div class="checkout-plan-option__daily-arrow" aria-hidden="true"></div>
                 <div class="checkout-plan-option__daily-tag">
                   <span class="checkout-plan-option__daily-currency">$</span>
                   <span class="checkout-plan-option__daily-price">${escapeHtml(plan.dailyPrice.replace("$", "").split(".")[0])}</span>
@@ -2350,7 +2351,7 @@ function renderCheckoutStep() {
         <a class="primary-button checkout-main-cta button-continue" href="./paywall.html">Get my plan</a>
 
         <p class="checkout-legal">
-          ${escapeHtml(offer.legalCopy)}
+          ${offer.legalHtml}
         </p>
 
         <div class="checkout-trust-row">
@@ -2395,10 +2396,6 @@ function renderCheckoutStep() {
         </article>
       </section>
 
-      <section class="checkout-award">
-        <p class="checkout-award__copy">NewMindStart is a 2026 Best Mobile App Award winner.</p>
-      </section>
-
       <section class="checkout-faq">
         <h3 class="checkout-section-title">People often ask</h3>
         <div class="checkout-faq__list">
@@ -2432,7 +2429,7 @@ function renderCheckoutStep() {
           ${renderCheckoutPlanOptions(offer)}
         </div>
         <a class="primary-button checkout-main-cta button-continue" href="./paywall.html">Get my plan</a>
-        <p class="checkout-legal">${escapeHtml(offer.legalCopy)}</p>
+        <p class="checkout-legal">${offer.legalHtml}</p>
         <div class="checkout-trust-row">
           <img class="checkout-payment-image" src="${escapeHtml(getAssetUrl("./assets/pay.png"))}" alt="Secure payment methods" />
         </div>
